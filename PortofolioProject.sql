@@ -141,3 +141,32 @@ Join PortofolioProject..CovidVaccinations vac
 
 	select * from PercentPopulationVaccinated
 
+
+
+--query for tableu
+
+--1
+select sum(new_cases) as total_cases, sum(cast(new_deaths as bigint)) as total_deaths, sum(cast(new_deaths as bigint))/sum(new_cases)*100 as
+DeathPercentage
+from PortofolioProject..CovidDeaths
+
+
+--2
+select location, sum(cast(new_deaths as bigint)) as TotalDeathCount
+from PortofolioProject..CovidDeaths
+where continent is null
+and location not in ('World', 'Upper middle income','High income', 'Lower middle income', 'Low income', 'International')
+group by location
+order by TotalDeathCount desc
+
+--3
+select location, population, max(total_cases) as HighestInfectionCount, max(total_cases)/population*100 as PercentPopulationInfected
+from PortofolioProject..CovidDeaths
+group by location, population
+order by 1
+
+--4
+select location, population,date, max(total_cases) as HighestInfectionCount, max(total_cases)/population*100 as PercentPopulationInfected
+from PortofolioProject..CovidDeaths
+group by location, population, date
+order by PercentPopulationInfected desc
